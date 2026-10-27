@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DeepKey 安装说明</title>
+<meta name="description" content="DeepKey 远程键鼠：配置 WiFi、连接被控电脑、远程控制的完整步骤与常见问题">
+<style>
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --edge:#e3e6ea; --tx:#1d2330; --mut:#5f6876;
+  --pri:#2563eb; --pri-tx:#ffffff; --pri-soft:#e8efff;
+  --ok:#15803d; --ok-soft:#e7f6ec; --warn:#b45309; --warn-soft:#fdf3e2; --bad:#b91c1c; --bad-soft:#fdeaea;
+  --code:#f0f2f5; --shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.08);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1216; --card:#171b21; --edge:#2a313b; --tx:#e6e9ee; --mut:#9aa3b2;
+    --pri:#4f8cff; --pri-tx:#0b1020; --pri-soft:#1a2740;
+    --ok:#4ade80; --ok-soft:#14261b; --warn:#fbbf24; --warn-soft:#2a2112; --bad:#f87171; --bad-soft:#2b1616;
+    --code:#222831; --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1216; --card:#171b21; --edge:#2a313b; --tx:#e6e9ee; --mut:#9aa3b2;
+  --pri:#4f8cff; --pri-tx:#0b1020; --pri-soft:#1a2740;
+  --ok:#4ade80; --ok-soft:#14261b; --warn:#fbbf24; --warn-soft:#2a2112; --bad:#f87171; --bad-soft:#2b1616;
+  --code:#222831; --shadow:none;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);
+  font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif}
+a{color:var(--pri)}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px}
+header{padding:40px 0 8px}
+header h1{font-size:30px;line-height:1.3;margin:0 0 6px}
+header p{margin:0;color:var(--mut)}
+nav.toc{margin:20px 0 8px;display:flex;flex-wrap:wrap;gap:8px}
+nav.toc a{font-size:14px;text-decoration:none;color:var(--tx);background:var(--card);border:1px solid var(--edge);
+  border-radius:999px;padding:4px 12px}
+nav.toc a:hover{border-color:var(--pri);color:var(--pri)}
+section{background:var(--card);border:1px solid var(--edge);border-radius:14px;box-shadow:var(--shadow);
+  padding:22px 22px 18px;margin:18px 0}
+section h2{font-size:21px;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--pri);color:var(--pri-tx);
+  display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
+h3{font-size:17px;margin:18px 0 6px}
+ol,ul{padding-left:22px;margin:8px 0}
+li{margin:4px 0}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em;background:var(--code);
+  border-radius:5px;padding:1px 6px;word-break:break-all}
+kbd{border:1px solid var(--edge);border-bottom-width:2px}
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 0 2px}
+.flow div{background:var(--pri-soft);border-radius:10px;padding:12px;font-size:14px}
+.flow b{display:block;font-size:15px;margin-bottom:2px}
+.need{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 18px;margin:8px 0 0;padding:0;list-style:none}
+.need li{padding-left:24px;position:relative}
+.need li::before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:700}
+.btn{display:inline-block;background:var(--pri);color:var(--pri-tx);text-decoration:none;font-weight:600;
+  border-radius:10px;padding:10px 18px;margin:6px 0}
+.btn:hover{filter:brightness(1.08)}
+.note,.tip,.warnbox{border-radius:10px;padding:10px 14px;margin:12px 0;font-size:15px}
+.tip{background:var(--ok-soft);border-left:4px solid var(--ok)}
+.note{background:var(--pri-soft);border-left:4px solid var(--pri)}
+.warnbox{background:var(--warn-soft);border-left:4px solid var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:15px;margin:8px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--edge);vertical-align:top}
+th{color:var(--mut);font-weight:600;font-size:14px}
+td:first-child{white-space:nowrap;font-weight:600}
+.st-ok{color:var(--ok);font-weight:600}.st-warn{color:var(--warn);font-weight:600}.st-bad{color:var(--bad);font-weight:600}
+details{border:1px solid var(--edge);border-radius:10px;padding:0 14px;margin:8px 0;background:var(--card)}
+details[open]{padding-bottom:10px}
+summary{cursor:pointer;padding:11px 0;font-weight:600;list-style:none;position:relative;padding-right:22px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:2px;top:9px;color:var(--mut);font-size:20px;line-height:1}
+details[open] summary::after{content:"−"}
+.diagram{width:100%;height:auto;display:block;margin:10px 0 4px}
+.diagram .box{fill:var(--card);stroke:var(--edge);stroke-width:2}
+.diagram .dev{fill:var(--pri-soft);stroke:var(--pri);stroke-width:2}
+.diagram .t{fill:var(--tx);font-size:15px;font-weight:600}
+.diagram .s{fill:var(--mut);font-size:13px}
+.diagram .w1{stroke:var(--warn);stroke-width:3;fill:none}
+.diagram .w2{stroke:var(--ok);stroke-width:3;fill:none}
+.diagram .lw1{fill:var(--warn);font-size:13px;font-weight:600}
+.diagram .lw2{fill:var(--ok);font-size:13px;font-weight:600}
+footer{color:var(--mut);font-size:14px;padding:10px 0 40px;text-align:center}
+.theme{position:fixed;right:14px;top:14px;border:1px solid var(--edge);background:var(--card);color:var(--tx);
+  border-radius:999px;padding:4px 10px;font-size:13px;cursor:pointer}
+@media (max-width:640px){
+  header{padding-top:28px} header h1{font-size:25px}
+  section{padding:18px 16px 14px}
+  .flow{grid-template-columns:1fr}
+  .need{grid-template-columns:1fr}
+  th:nth-child(3),td:nth-child(3){display:none}
+}
+</style>
+</head>
+<body>
+<button class="theme" id="theme" title="切换深色/浅色">◐</button>
+<div class="wrap">
+
+<header>
+  <h1>DeepKey 安装说明</h1>
+  <p>DeepKey 插在你家的电脑上，你在外面用手机或电脑的浏览器，就能远程操作那台电脑的键盘和鼠标。</p>
+  <nav class="toc">
+    <a href="#prepare">准备</a><a href="#ports">两个接口</a><a href="#wifi">① 配置 WiFi</a>
+    <a href="#plug">② 接被控电脑</a><a href="#remote">③ 远程控制</a><a href="#home">在家直连</a>
+    <a href="#use">控制页用法</a><a href="#faq">常见问题</a><a href="#safe">安全须知</a>
+  </nav>
+</header>
+
+<section id="prepare">
+  <h2>先看一眼：只要三步</h2>
+  <div class="flow">
+    <div><b>① 配置 WiFi</b>用数据线把 DeepKey 接到任意一台电脑，在网页里填 WiFi 和绑定码。</div>
+    <div><b>② 接被控电脑</b>把 DeepKey 插到你想远程控制的那台电脑上。</div>
+    <div><b>③ 远程控制</b>在外面打开你的专属网址，就能操作那台电脑。</div>
+  </div>
+  <h3>需要准备</h3>
+  <ul class="need">
+    <li>DeepKey 设备和 USB-C 数据线</li>
+    <li>一台电脑，装有 <b>Chrome</b> 或 <b>Edge</b> 浏览器（配置时用）</li>
+    <li>家里的 <b>2.4G WiFi</b> 名称和密码</li>
+    <li>卖家给你的 <b>绑定码</b>（6 位数字）和 <b>专属网址</b></li>
+  </ul>
+  <div class="note">配置只需要做一次。以后换了 WiFi 或者要转给别人用，再按第 ① 步重新配置即可。</div>
+</section>
+
+<section id="ports">
+  <h2>认识两个接口</h2>
+  <p>DeepKey 有两个 USB-C 口，用途不同，插错了不会损坏，但功能用不了：</p>
+  <svg class="diagram" viewBox="0 0 760 210" role="img" aria-label="接线示意：COM 口接配置用的电脑，USB 口接被控电脑">
+    <rect class="box" x="10" y="60" width="200" height="90" rx="10"/>
+    <text class="t" x="110" y="98" text-anchor="middle">配置用的电脑</text>
+    <text class="s" x="110" y="122" text-anchor="middle">只在第 ① 步用到</text>
+    <rect class="dev" x="290" y="45" width="180" height="120" rx="14"/>
+    <text class="t" x="380" y="100" text-anchor="middle">DeepKey</text>
+    <text class="s" x="300" y="80">COM</text>
+    <text class="s" x="460" y="80" text-anchor="end">USB</text>
+    <rect class="box" x="550" y="60" width="200" height="90" rx="10"/>
+    <text class="t" x="650" y="98" text-anchor="middle">被控电脑</text>
+    <text class="s" x="650" y="122" text-anchor="middle">一直插着</text>
+    <path class="w1" d="M210 105 H290"/>
+    <path class="w2" d="M470 105 H550"/>
+    <text class="lw1" x="250" y="96" text-anchor="middle">COM 口</text>
+    <text class="lw2" x="510" y="96" text-anchor="middle">USB 口</text>
+    <text class="s" x="380" y="195" text-anchor="middle">两台电脑也可以是同一台：两根线都插在这台电脑上即可</text>
+  </svg>
+  <table>
+    <tr><th>接口</th><th>接到哪里</th><th>作用</th></tr>
+    <tr><td><b>COM</b></td><td>配置用的电脑</td><td>配置 WiFi、绑定码、设备名。配置完可以拔掉</td></tr>
+    <tr><td><b>USB</b></td><td>要被控制的电脑</td><td>DeepKey 在这台电脑上就是一套键盘和鼠标，同时由它供电</td></tr>
+  </table>
+  <div class="tip">接口旁边印有 <b>COM</b> 和 <b>USB</b> 字样。如果外壳挡住看不到，可以问卖家，或者看第 ① 步：网页能连上的那个口就是 COM 口。</div>
+</section>
+
+<section id="wifi">
+  <h2><span class="num">1</span>配置 WiFi 和绑定码</h2>
+  <ol>
+    <li>用数据线把 DeepKey 的 <b>COM 口</b> 接到电脑上。</li>
+    <li>用 <b>Chrome 或 Edge</b> 打开配网页：<br>
+      <a class="btn" href="setup.html">打开 DeepKey 配网页</a><br>
+      <span style="color:var(--mut);font-size:14px">如果卖家给你发的是带绑定码的链接（网址末尾有 <code>?bind=</code>），直接打开那个链接，绑定码会自动填好。</span></li>
+    <li>点「<b>连接设备</b>」，浏览器会弹出串口列表，选 DeepKey 那一项后点「连接」。
+      <ul>
+        <li>Windows 上一般叫「<b>USB 串行设备 (COMx)</b>」或「USB-Enhanced-SERIAL CH343」</li>
+        <li>Mac 上一般叫 <code>wchusbserial…</code> 或 <code>usbmodem…</code></li>
+      </ul></li>
+    <li>连上后页面会显示设备编号和当前状态。依次填写：
+      <ul>
+        <li><b>WiFi 名称</b>和<b>密码</b>：必须是 2.4G WiFi（名字里带 5G 的一般不行）</li>
+        <li><b>绑定码</b>：卖家给你的 6 位数字</li>
+        <li><b>设备名称</b>：随便起，比如「书房电脑」，会显示在你的设备列表里</li>
+      </ul></li>
+    <li>点「<b>保存</b>」。等十几秒，页面会自动刷新状态。看到「<span class="st-ok">✅ 设置完成，设备已经在线</span>」就成功了。</li>
+  </ol>
+  <h3>状态说明</h3>
+  <table>
+    <tr><th>页面显示</th><th>意思</th><th>怎么办</th></tr>
+    <tr><td><span class="st-ok">WiFi：已连接</span></td><td>WiFi 配好了</td><td>—</td></tr>
+    <tr><td><span class="st-warn">WiFi：连接中…</span></td><td>正在连 WiFi</td><td>等 10–20 秒；一直这样请检查名称、密码，确认是 2.4G</td></tr>
+    <tr><td><span class="st-ok">服务器：在线 · 属于 xxx</span></td><td>一切正常</td><td>可以拔线，进行第 ② 步</td></tr>
+    <tr><td><span class="st-bad">绑定码无效或没填</span></td><td>绑定码不对</td><td>核对卖家给的绑定码后重新保存</td></tr>
+    <tr><td><span class="st-bad">设备需要重新绑定</span></td><td>设备恢复过出厂设置或换过账号</td><td>向卖家要绑定码，填上后保存</td></tr>
+    <tr><td><span class="st-bad">连不上服务器</span></td><td>WiFi 通了但连不到服务器</td><td>稍后再试；家里网络有限制的话请联系卖家</td></tr>
+  </table>
+  <div class="tip">页面上的「<b>测试键盘</b>」按钮会在 USB 口所接的电脑上输入 <code>hello</code>，可以用来确认键盘是通的（需要那台电脑上有个能打字的地方，比如记事本）。</div>
+</section>
+
+<section id="plug">
+  <h2><span class="num">2</span>接到要控制的电脑</h2>
+  <ol>
+    <li>把 DeepKey 的 <b>USB 口</b> 插到要远程控制的电脑上。</li>
+    <li>电脑会把它识别成一套键盘和鼠标，<b>不需要装任何软件或驱动</b>。Windows 第一次插上可能会"叮"一声，属于正常。</li>
+    <li>DeepKey 由这台电脑供电，插上后十几秒内会自动连上 WiFi 和服务器。</li>
+  </ol>
+  <div class="note">如果配置时用的就是这台电脑，配置完拔掉 COM 口那根线即可，USB 口那根一直插着。</div>
+  <div class="warnbox">被控电脑要保持开机。电脑睡眠或关机时，USB 键鼠一般不起作用。建议在系统设置里关掉自动睡眠，或者设置成"按键盘可唤醒"。</div>
+</section>
+
+<section id="remote">
+  <h2><span class="num">3</span>在外面远程控制</h2>
+  <ol>
+    <li>用手机或电脑的浏览器打开卖家给你的<b>专属网址</b>（形如 <code>http://服务器地址/u/一串字符</code>）。</li>
+    <li>页面会列出你名下的设备，以及是否<b>在线</b>。</li>
+    <li>点设备名，进入控制页，会自动连接，然后就可以操作了。</li>
+  </ol>
+  <div class="tip"><b>收藏这个网址。</b>手机上可以用浏览器菜单里的「添加到主屏幕」，以后像打开 App 一样点一下就行。</div>
+  <div class="warnbox">专属网址就是你的钥匙：拿到这个网址的人都能控制你的设备，<b>不要发给别人</b>。如果不小心泄露了，联系卖家换一个，旧网址立即失效。</div>
+</section>
+
+<section id="home">
+  <h2>在家里直接连（不经过服务器）</h2>
+  <p>手机或电脑和 DeepKey 连着<b>同一个 WiFi</b> 时，可以直接连设备，速度更快，服务器连不上时也能用：</p>
+  <ul>
+    <li>设备列表里在线的设备下面会显示「<b>在家(同一 WiFi)可直连</b>」的地址，点它就行；</li>
+    <li>或者直接打开 <code>http://deepkey-xxxxxx.local/</code>（xxxxxx 是设备编号的后 6 位，配网页上能看到）；</li>
+    <li>部分安卓手机打不开 <code>.local</code> 地址，这时用 IP 地址，比如 <code>http://192.168.1.50/</code>，配网页上也会显示。</li>
+  </ul>
+  <div class="note">同一个 WiFi 下的人都能打开这个直连页面并控制键鼠，但改不了设备的设置（WiFi、绑定码只能通过 COM 口改）。</div>
+</section>
+
+<section id="use">
+  <h2>控制页怎么用</h2>
+  <table>
+    <tr><th>功能</th><th>怎么操作</th><th>说明</th></tr>
+    <tr><td>开始操作</td><td>先点「🎯 捕获键鼠」，变成「开」</td><td>打开后，灰框里的拖动和你键盘上的按键才会发给被控电脑；再点一次关闭</td></tr>
+    <tr><td>移动鼠标</td><td>在灰色大框里按住拖动</td><td>像触控板一样移光标；手机上用手指拖</td></tr>
+    <tr><td>左键单击</td><td>在灰框里轻点一下</td><td>或者点「左键」按钮</td></tr>
+    <tr><td>其他鼠标键</td><td>点「右键」「中键」「后退键」「前进键」</td><td>「按住左键(拖拽)」点一下按住、再点一下松开</td></tr>
+    <tr><td>滚轮</td><td>「滚轮 ↑」「滚轮 ↓」；电脑上也可以在灰框里滚动</td><td>触控板左右滑 = 水平滚动</td></tr>
+    <tr><td>打字</td><td>捕获打开后，直接用你的键盘打字</td><td>关闭捕获后，按键回到你自己的电脑</td></tr>
+    <tr><td>屏幕键盘</td><td>页面下方的键盘，点即发送</td><td>Ctrl / Shift / Alt / Win 点亮表示按住，再点松开</td></tr>
+    <tr><td>沉浸操作</td><td>点「🖥 沉浸操作」</td><td>电脑上全屏操作，鼠标锁定在页面里；按 <kbd>Esc</kbd> 退出</td></tr>
+    <tr><td>常用组合</td><td>「Ctrl+Alt+Del」「Esc」「Enter」等快捷按钮</td><td>—</td></tr>
+    <tr><td>全松</td><td>点「全松」</td><td>万一有键卡住了，点它把所有键和鼠标按键松开</td></tr>
+  </table>
+  <div class="tip">网络断了、页面关了，设备会在约 1 秒内自动松开所有按键，不会一直卡着。</div>
+</section>
+
+<section id="faq">
+  <h2>常见问题</h2>
+
+  <details><summary>点「连接设备」后，列表里找不到 DeepKey</summary>
+    <ul>
+      <li>确认插的是 <b>COM 口</b>，并且数据线能传数据（有些线只能充电，换一根试试）。</li>
+      <li>Windows 10/11 一般自动识别，不用装驱动。如果设备管理器里出现带黄色感叹号的设备，安装 CH343 串口驱动：<a href="https://www.wch-ic.com/search?t=all&q=ch343" target="_blank" rel="noopener">WCH 官网搜索 CH343</a>，下载 Windows 版 <code>CH343SER</code> 安装后重新插线。</li>
+      <li>必须用 <b>Chrome 或 Edge</b>（电脑版）。Safari、Firefox 和手机浏览器不支持网页串口。</li>
+    </ul>
+  </details>
+
+  <details><summary>显示「设备没有回应」</summary>
+    <ul>
+      <li>确认插的是 COM 口，不是 USB 口。</li>
+      <li>拔掉 COM 口的线，等 3 秒再插上，然后重新点「连接设备」。</li>
+      <li>还不行就点「刷新状态」，或联系卖家。</li>
+    </ul>
+  </details>
+
+  <details><summary>WiFi 一直「连接中」</summary>
+    <ul>
+      <li>DeepKey 只支持 <b>2.4G</b> WiFi。路由器如果是"双频合一"，可以在路由器设置里单独开一个 2.4G 名称。</li>
+      <li>核对 WiFi 名称和密码，注意大小写。</li>
+      <li>不支持需要网页登录的 WiFi（酒店、公司访客网络那种）。</li>
+      <li>设备离路由器太远也会连不上，换个近一点的位置试试。</li>
+    </ul>
+  </details>
+
+  <details><summary>设备列表里显示「离线」</summary>
+    <ul>
+      <li>被控电脑是否开着？DeepKey 是从 USB 口取电的，电脑关机后 DeepKey 也会断电。</li>
+      <li>家里的 WiFi 或宽带是否正常？</li>
+      <li>换过 WiFi 名称或密码？需要按第 ① 步重新配置。</li>
+    </ul>
+  </details>
+
+  <details><summary>显示在线，但操作后被控电脑没反应</summary>
+    <ul>
+      <li>页面顶部「HID」显示「<b>未就绪</b>」：说明 USB 口没插好，或者被控电脑在睡眠。把 USB 口那根线重新插一下，或者先唤醒电脑。</li>
+      <li>拖动、打字没反应：确认「🎯 捕获键鼠」是「开」，并且被控电脑上有个能输入的窗口在前台。屏幕键盘和鼠标按钮不需要打开捕获。</li>
+      <li>输入的是英文，不是中文：打字走的是键盘按键，中文需要在被控电脑上切换输入法后用拼音输入。</li>
+    </ul>
+  </details>
+
+  <details><summary>有个键好像一直按着</summary>
+    <p>点控制页上的「<b>全松</b>」。如果页面打不开，等 1–2 秒，设备检测到网络断开会自动全部松开。</p>
+  </details>
+
+  <details><summary>鼠标移动有延迟或一卡一卡的</summary>
+    <ul>
+      <li>远程控制要经过服务器，网络差的时候会有延迟。手机信号或 WiFi 不好时比较明显。</li>
+      <li>在家时用「在家直连」会快很多。</li>
+    </ul>
+  </details>
+
+  <details><summary>换了 WiFi / 搬家了</summary>
+    <p>按第 ① 步重新连接配网页，填新的 WiFi 名称和密码后保存即可。<b>绑定码留空</b>，设备还是你的。</p>
+  </details>
+
+  <details><summary>要把设备转给别人用</summary>
+    <p>请联系卖家拿新用户的绑定码，按第 ① 步填进去保存。保存成功后设备就到了新用户名下，原来的专属网址里就看不到它了。</p>
+  </details>
+</section>
+
+<section id="safe">
+  <h2>安全须知</h2>
+  <ul>
+    <li><b>专属网址 = 钥匙。</b>不要截图发群、不要发给不认识的人。泄露后联系卖家更换。</li>
+    <li>远程控制能做你在键盘鼠标上能做的所有事情。离开电脑前，建议锁屏（被控电脑上的登录密码仍然有效）。</li>
+    <li>同一个 WiFi 下的人可以打开"在家直连"页面。如果家里 WiFi 有不信任的人在用，建议给访客单独开一个访客网络。</li>
+    <li>设备的 WiFi、绑定码等设置只能用数据线插 COM 口修改，远程和网页都改不了。</li>
+  </ul>
+</section>
+
+<footer>DeepKey 远程键鼠 · 有问题请联系卖家</footer>
+</div>
+<script>
+(function(){
+  var root=document.documentElement, b=document.getElementById('theme');
+  try{ var t=localStorage.getItem('dk-doc-theme'); if(t) root.setAttribute('data-theme',t); }catch(e){}
+  b.onclick=function(){
+    var dark = root.getAttribute('data-theme') ? root.getAttribute('data-theme')==='dark'
+             : matchMedia('(prefers-color-scheme: dark)').matches;
+    var next = dark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try{ localStorage.setItem('dk-doc-theme', next); }catch(e){}
+  };
+})();
+</script>
+</body>
+</html>
